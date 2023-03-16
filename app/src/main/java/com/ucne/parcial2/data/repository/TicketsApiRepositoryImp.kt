@@ -17,10 +17,10 @@ class TicketsApiRepositoryImp @Inject constructor(
         try {
             emit(Resource.Loading()) //indicar que estamos cargando
 
-            val ocupaciones =
+            val ticket =
                 ticketsApi.getTickets() //descarga las ocupaciones de internet, se supone quedemora algo
 
-            emit(Resource.Success(ocupaciones)) //indicar que se cargo correctamente y pasarle las monedas
+            emit(Resource.Success(ticket)) //indicar que se cargo correctamente y pasarle las monedas
         } catch (e: HttpException) {
             //error general HTTP
             emit(Resource.Error(e.message ?: "Error HTTP GENERAL"))

@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.ucne.parcial2.data.local.RoomTicketsDb
 import com.ucne.parcial2.data.remote.TicketsApi
+import com.ucne.parcial2.data.repository.TicketApiRepository
+import com.ucne.parcial2.data.repository.TicketsApiRepositoryImp
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +20,31 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+abstract class RepositoryModule{
+    @Binds
+    abstract  fun bindTicketsRepository(impl: TicketsApiRepositoryImp): TicketApiRepository
+
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
 object AppModule {
+
+    @Singleton
+    @Provides
+    fun providesDatabase(@ApplicationContext context: Context): RoomTicketsDb {
+        return Room.databaseBuilder(
+            context,
+            RoomTicketsDb::class.java,
+            "RoomExample.db"
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesTicketsDao(db: RoomTicketsDb) = db.ticketDao
 
 
     @Singleton
@@ -25,7 +53,7 @@ object AppModule {
         return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
     }
 
-    /*@Singleton
+    @Singleton
     @Provides
     fun providesTePrestoApi(moshi: Moshi): TicketsApi {
         return Retrofit.Builder()
@@ -34,5 +62,4 @@ object AppModule {
             .build()
             .create(TicketsApi::class.java)
     }
-*/
 }

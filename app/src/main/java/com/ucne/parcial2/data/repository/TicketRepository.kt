@@ -17,17 +17,9 @@ class TicketRepository @Inject constructor
 
         ticketDao.insert(ticket) //insertar en la base de datos
 
-//        val ticketNoEnviadas = ticketDao.getNoEnviadas() //buscar no enviados
-
         ticketsApi.postTickets(ticket.toTicketDto())
 
-        ticketsApi.putTickets(ticket.ticketId!! ,ticket.toTicketDto())
-
-
-//        ticketNoEnviadas.map { ticketEntity ->
-//            val dto = ticketEntity.toTicketDto()
-//            ticketsApi.postTickets(dto)
-//        }
+        ticketsApi.putTickets(1, ticket.toTicketDto())
     }
 
     suspend fun delete(ticket: TicketEntity) = ticketDao.delete(ticket)

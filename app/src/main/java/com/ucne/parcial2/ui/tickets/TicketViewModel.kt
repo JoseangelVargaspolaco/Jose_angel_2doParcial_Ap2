@@ -23,8 +23,14 @@ class TicketViewModel @Inject constructor(
     private val ticketRepository: TicketRepository
 ) : ViewModel() {
 
-    var descripcion by mutableStateOf("")
-    var sueldo by mutableStateOf("")
+    var asunto by mutableStateOf("")
+    var empresa by mutableStateOf("")
+    var encargadoId by mutableStateOf("")
+    var especificaciones by mutableStateOf("")
+    var estatus by mutableStateOf("")
+    var fecha by mutableStateOf("")
+    var orden by mutableStateOf("")
+
     var isValid: Boolean by mutableStateOf(false)
 
     var uiState = MutableStateFlow(TicketsUiState())
@@ -56,22 +62,30 @@ class TicketViewModel @Inject constructor(
     }
 
     fun insertar() {
-        try {
-//            val ticket = TicketEntity(
-////                descripcion = descripcion,
-////                sueldo = sueldo.toDoubleOrNull() ?: 0.0
-//            )
 
-//            viewModelScope.launch(Dispatchers.IO) {
-//                ticketRepository.insert(ticket)
-//                Limpiar()
-//            }
-        } catch (ex: IllegalArgumentException) {
-            isValid = true
+        val ticket = TicketEntity(
+            asunto = asunto,
+            empresa = empresa,
+            encargadoId = encargadoId.toIntOrNull() ?: 0,
+            especificaciones = especificaciones,
+            estatus = estatus,
+            fecha = fecha,
+            orden = orden.toIntOrNull() ?: 0
+        )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            ticketRepository.insert(ticket)
+            Limpiar()
         }
     }
 
     private fun Limpiar() {
-
+        asunto = ""
+        empresa = ""
+        encargadoId = ""
+        especificaciones = ""
+        estatus = ""
+        fecha = ""
+        orden = ""
     }
 }

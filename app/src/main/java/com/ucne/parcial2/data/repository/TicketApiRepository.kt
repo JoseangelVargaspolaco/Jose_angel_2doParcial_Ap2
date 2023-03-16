@@ -9,6 +9,5 @@ interface TicketApiRepository
 {
     fun getTickets(): Flow<Resource<List<TicketDto>>>
     suspend fun putTickets(id: Int, ticketDto: TicketDto)
-
     suspend fun deleteTickets(id: Int)
 }

@@ -6,7 +6,6 @@ import com.ucne.parcial2.data.remote.dto.TicketDto
 
 @Entity(tableName = "Tickets")
 data class TicketEntity(
-    @PrimaryKey(autoGenerate = true)
     val asunto: String,
     val empresa: String,
     val encargadoId: Int,
@@ -14,6 +13,7 @@ data class TicketEntity(
     val estatus: String,
     val fecha: String,
     val orden: Int,
+    @PrimaryKey(autoGenerate = true)
     val ticketId: Int? = null,
     val enviado: Boolean = false
 )

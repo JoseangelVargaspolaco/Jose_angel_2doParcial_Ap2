@@ -6,7 +6,7 @@ data class TicketDto(
     val encargadoId: Int,
     val especificaciones: String,
     val estatus: String,
-    val fecha: String,
+    var fecha: String,
     val orden: Int,
     val ticketId: Int
 )

@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class TicketsListState(
@@ -48,5 +49,34 @@ class TicketApiViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+
+        fun putData(id: Int,ticketDto: TicketDto){
+            viewModelScope.launch {
+                try{
+                    ticketApiRepository.putTickets(id, ticketDto)
+                } catch (e: Exception){
+                    println("Error desconocido")
+                }
+            }
+        }
+
+        fun deleteData(id: Int){
+            viewModelScope.launch {
+                try{
+                    ticketApiRepository.deleteTickets(id)
+                }catch(e: Exception){}
+                println("Error desconocido")
+            }
+        }
+
+        fun postData(ticketDto: TicketDto){
+            viewModelScope.launch {
+                try {
+                    ticketApiRepository.postTickets(ticketDto)
+                }catch (e: Exception){
+                    println("Arreglalo ta dañao")
+                }
+            }
+        }
     }
 }

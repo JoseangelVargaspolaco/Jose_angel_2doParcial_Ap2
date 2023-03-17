@@ -67,49 +67,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MytopAppBar() {
-
-    TopAppBar(
-        title = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                Alignment.Center
-            ) {
-                Text(text = "Top App Bar")
-            }
-        },
-        navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Default.Menu,
-                    contentDescription = "Icon"
-                )
-            }
-        },
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 10.dp)
-            .clip(shape = RoundedCornerShape(16.dp))
-            .background(Color.Cyan),
-        actions = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Default.FavoriteBorder,
-                    contentDescription = null
-                )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = null
-                )
-            }
-        }
-    )
-}
-
 @Composable
 fun StartScreen(name: String = "") {
     Text(text = "Hello $name!")

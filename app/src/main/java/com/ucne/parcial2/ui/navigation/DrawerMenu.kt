@@ -24,7 +24,6 @@ fun DrawerMenu(
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-// icons to mimic drawer destinations
     val ic  = Icons.TwoTone.Favorite
 
     val items = listOf(ScreenModule.Start, ScreenModule.Tickets, ScreenModule.TicketsList)

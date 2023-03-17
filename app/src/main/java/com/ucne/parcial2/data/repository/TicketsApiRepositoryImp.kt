@@ -17,8 +17,7 @@ class TicketsApiRepositoryImp @Inject constructor(
         try {
             emit(Resource.Loading()) //indicar que estamos cargando
 
-            val ticket =
-                ticketsApi.getTickets() //descarga las ocupaciones de internet, se supone quedemora algo
+            val ticket = ticketsApi.getTickets() //descarga las ocupaciones de internet, se supone quedemora algo
 
             emit(Resource.Success(ticket)) //indicar que se cargo correctamente y pasarle las monedas
         } catch (e: HttpException) {
@@ -33,6 +32,8 @@ class TicketsApiRepositoryImp @Inject constructor(
     override suspend fun putTickets(id: Int, ticketDto: TicketDto) {
         ticketsApi.putTickets(id, ticketDto)
     }
-
     override suspend fun deleteTickets(id: Int) = ticketsApi.deleteTickets(id)
+    override suspend fun postTickets(ticketDto: TicketDto) {
+       ticketsApi.postTickets(ticketDto)
+    }
 }

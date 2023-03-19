@@ -61,16 +61,16 @@ fun TicketsListScreen(
                                 fontSize = 40.sp,
                                 style = MaterialTheme.typography.headlineLarge
                             )
+                            Spacer(modifier = Modifier.padding(10.dp))
+                            FloatingActionButton(
+                                onClick = {  navController.navigate(ScreenModule.TicketsList.route) }
+                            ) {
+                                Icon(imageVector = Icons.TwoTone.Autorenew, contentDescription = "Actualizar")
+                            }
+                            Spacer(modifier = Modifier.padding(5.dp))
                         }
                     }
                 )
-            },
-            floatingActionButton = {
-                FloatingActionButton(
-                    onClick = { navController.navigate(ScreenModule.TicketsList.route) }
-                ) {
-                    Icon(imageVector = Icons.TwoTone.Autorenew, contentDescription = "Actualizar")
-                }
             }
         ) {
             val uiState by viewModel.uiState.collectAsState()
@@ -145,10 +145,9 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                     },
                     style = MaterialTheme.typography.titleLarge,
                 )
-
                 Text(
                     text = ticket.estatus.foldIndexed("") { index, acc, c ->
-                        if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
+                        if (index % 21 == 0 && index > 0) "$acc\n$c" else "$acc$c"
                     },
                     style = MaterialTheme.typography.titleLarge,
                 )

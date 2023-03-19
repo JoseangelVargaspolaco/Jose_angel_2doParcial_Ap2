@@ -63,7 +63,7 @@ class TicketApiViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-    fun setTicket(id:Int){
+    fun TicketbyId(id:Int){
         ticketId = id
         Limpiar()
         ticketRepository.getTicketsId(ticketId).onEach { result ->
@@ -87,6 +87,7 @@ class TicketApiViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
     fun putTicket(){
         viewModelScope.launch {
             ticketRepository.putTickets(ticketId, TicketDto(asunto,
@@ -97,7 +98,19 @@ class TicketApiViewModel @Inject constructor(
                 uiStateTicket.value.ticket!!.orden,
                 ticketId = ticketId ))
         }
+    }
 
+    fun deleteTicket(){
+        viewModelScope.launch {
+            ticketRepository.deleteTickets(ticketId, TicketDto(asunto,
+                empresa,
+                uiStateTicket.value.ticket!!.encargadoId,
+                especificaciones,
+                estatus,uiStateTicket.value.ticket!!.fecha,
+                uiStateTicket.value.ticket!!.orden,
+                ticketId = ticketId )
+            )
+        }
     }
 
     private fun Limpiar(){

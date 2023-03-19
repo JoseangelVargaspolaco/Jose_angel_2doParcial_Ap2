@@ -48,7 +48,9 @@ class TicketsApiRepositoryImp @Inject constructor(
     override suspend fun putTickets(id: Int, ticketDto: TicketDto) {
         ticketsApi.putTickets(id, ticketDto)
     }
-    override suspend fun deleteTickets(id: Int) = ticketsApi.deleteTickets(id)
+    override suspend fun deleteTickets(id: Int, ticketDto: TicketDto){
+        ticketsApi.deleteTickets(id, ticketDto)
+    }
     override suspend fun postTickets(ticketDto: TicketDto) {
        ticketsApi.postTickets(ticketDto)
     }

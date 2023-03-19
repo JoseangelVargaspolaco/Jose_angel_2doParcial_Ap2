@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,7 +33,7 @@ fun TicketScreen(
     onSaveClick: () -> Unit
 ) {
     remember {
-        viewModel.setTicket(ticketId)
+        viewModel.TicketbyId(ticketId)
         0
     }
     Column(Modifier.fillMaxWidth()) {
@@ -180,8 +181,28 @@ private fun TicketBody(
                             onSaveClick()
                         }
                     )
-                }
 
+                    /* Todo: deleteTicket() en prodeso
+
+                    ExtendedFloatingActionButton(
+                        modifier = Modifier
+                            .size(120.dp, 120.dp)
+                            .align(Alignment.CenterHorizontally)
+                            .wrapContentSize(Alignment.Center),
+                        text = { Text("Eliminar") },
+                        icon = {
+                            Icon(
+                                imageVector = Icons.TwoTone.Delete,
+                                contentDescription = "delete"
+                            )
+                        },
+                        onClick = {
+                            viewModel.deleteTicket()
+                            onSaveClick()
+                        }
+                    )
+                    */
+                }
             }
         }
     }

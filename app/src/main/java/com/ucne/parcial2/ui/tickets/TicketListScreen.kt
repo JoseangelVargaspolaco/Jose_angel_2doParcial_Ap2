@@ -1,16 +1,12 @@
 package com.ucne.parcial2.ui.tickets
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.twotone.ArrowBack
-import androidx.compose.material.icons.twotone.Autorenew
-import androidx.compose.material.icons.twotone.CheckBox
+import androidx.compose.material.icons.twotone.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +15,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,7 +48,9 @@ fun TicketsListScreen(
                 }
         )
         Scaffold(
-            modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.Center),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.Center),
             topBar = {
                 TopAppBar(
                     title = {
@@ -140,33 +137,47 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = ticket.asunto,
+                    text = ticket.asunto.foldIndexed("") { index, acc, c ->
+                        if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
+                    },
+                    style = MaterialTheme.typography.titleLarge,
+                )
+                Text(
+                    text = ticket.estatus.foldIndexed("") { index, acc, c ->
+                        if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
+                    },
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Icon(
                     imageVector = when (ticket.estatus) {
                         "Solicitado" -> {
-                            Icons.TwoTone.CheckBox
+                            Icons.TwoTone.DownloadDone
                         }
                         "En espera" -> {
-                            Icons.TwoTone.CheckBox
+                            Icons.TwoTone.BackHand
                         }
-                        "No Solicitado" -> {
+                        "En Proceso" -> {
+                            Icons.TwoTone.ChangeCircle
+                        }
+                        "Finalizado" -> {
                             Icons.TwoTone.CheckBox
                         }
                         else -> {
-                            Icons.TwoTone.CheckBox
+                            Icons.TwoTone.AddCircle
                         }
                     }, contentDescription = ticket.estatus,
                     tint = when (ticket.estatus) {
                         "Solicitado" -> {
-                            Color.Gray
+                            Color.Blue
                         }
                         "En espera" -> {
-                            Color.Gray
+                            Color.Cyan
                         }
-                        "No Solicitado" -> {
-                            Color.Gray
+                        "En proceso" -> {
+                            Color.Cyan
+                        }
+                        "Finalizado" -> {
+                            Color.Green
                         }
                         else -> {
                             Color.Gray
@@ -176,6 +187,10 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
             }
         }
         Spacer(modifier = Modifier.padding(10.dp))
-        Divider(Modifier.fillMaxWidth().size(15.dp))
+        Divider(
+            Modifier
+                .fillMaxWidth()
+                .size(15.dp)
+        )
     }
 }

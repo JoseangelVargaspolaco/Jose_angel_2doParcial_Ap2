@@ -41,16 +41,27 @@ class TicketApiViewModel @Inject constructor(
     var estatus by mutableStateOf("")
     var fecha by mutableStateOf("")
 
-    val Estatus = listOf("Solicitado", "En espera", "Finalizado", "No Solicitado")
     var uiState = MutableStateFlow(TicketsListState())
         private set
     var uiStateTicket = MutableStateFlow(TicketsState())
         private set
-    private fun Limpiar(){
-        empresa = ""
-        asunto = ""
-        estatus = ""
-        especificaciones = ""
+
+    init {
+        ticketRepository.getTickets().onEach { result ->
+            when (result) {
+                is Resource.Loading -> {
+                    uiState.update { it.copy(isLoading = true) }
+                }
+                is Resource.Success -> {
+                    uiState.update {
+                        it.copy(tickets = result.data ?: emptyList())
+                    }
+                }
+                is Resource.Error -> {
+                    uiState.update { it.copy(error = result.message ?: "Error desconocido") }
+                }
+            }
+        }.launchIn(viewModelScope)
     }
     fun setTicket(id:Int){
         ticketId = id
@@ -88,21 +99,11 @@ class TicketApiViewModel @Inject constructor(
         }
 
     }
-    init {
-        ticketRepository.getTickets().onEach { result ->
-            when (result) {
-                is Resource.Loading -> {
-                    uiState.update { it.copy(isLoading = true) }
-                }
-                is Resource.Success -> {
-                    uiState.update {
-                        it.copy(tickets = result.data ?: emptyList())
-                    }
-                }
-                is Resource.Error -> {
-                    uiState.update { it.copy(error = result.message ?: "Error desconocido") }
-                }
-            }
-        }.launchIn(viewModelScope)
+
+    private fun Limpiar(){
+        empresa = ""
+        asunto = ""
+        estatus = ""
+        especificaciones = ""
     }
 }

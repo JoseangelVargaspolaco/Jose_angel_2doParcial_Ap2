@@ -9,7 +9,7 @@ import com.ucne.parcial2.data.local.entity.TicketEntity
     entities = [
         TicketEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class RoomTicketsDb : RoomDatabase() {
     abstract val ticketDao: TicketDao

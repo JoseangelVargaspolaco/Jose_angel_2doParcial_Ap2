@@ -7,11 +7,16 @@ import retrofit2.http.*
 interface TicketsApi{
     @GET("/api/tickets")
     suspend fun getTickets(): List<TicketDto>
-    @POST("/api/Tickets")
-    suspend fun postTickets(@Body ticketDto: TicketDto) : TicketDto
-    @PUT("/api/Tickets/{id}")
+
+    @GET("/api/tickets/{id}")
+    suspend fun getTicketsId(@Path("id") id: Int): TicketDto
+
+    @POST("/api/tickets")
+    suspend fun postTickets(@Body ticketDto: TicketDto): TicketDto
+
+    @PUT("/api/tickets/{id}")
     suspend fun putTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): Response<Unit>
 
-    @DELETE("/api/Tickets/{id}")
+    @DELETE("/api/tickets/{id}")
     suspend fun deleteTickets(@Path("id") id: Int)
 }

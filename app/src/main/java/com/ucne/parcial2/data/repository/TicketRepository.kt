@@ -22,6 +22,10 @@ class TicketRepository @Inject constructor
        ticketsApi.putTickets(ticket.ticketId!!, ticket.toTicketDto())
     }
 
+    suspend fun update(ticket: TicketEntity){
+        ticketDao.update(ticket)
+    }
+
     suspend fun delete(ticket: TicketEntity) = ticketDao.delete(ticket)
 
     suspend fun find(ticketId:Int) = ticketDao.find(ticketId)

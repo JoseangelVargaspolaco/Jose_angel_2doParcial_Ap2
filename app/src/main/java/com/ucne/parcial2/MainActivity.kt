@@ -5,33 +5,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.ucne.parcial2.ui.navigation.DrawerMenu
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import com.ucne.parcial2.ui.theme.Parcial2Theme
-import com.ucne.parcial2.ui.tickets.TicketsScreen
-import com.ucne.parcial2.ui.tickets.TicktetListScreen
+import com.ucne.parcial2.ui.tickets.TicketScreen
+import com.ucne.parcial2.ui.tickets.TicketsListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,11 +43,19 @@ class MainActivity : ComponentActivity() {
                         composable(ScreenModule.Start.route) {
                             DrawerMenu(navController = navController)
                         }
-                        composable(ScreenModule.TicketsList.route) {
-                            TicktetListScreen(onNewTicket = {}, navController = navController)
+                        composable(route = ScreenModule.TicketsList.route){
+                            TicketsListScreen(navController = navController){ id ->
+                                navController.navigate(ScreenModule.Tickets.route + "/${id}")
+                            }
                         }
-                        composable(ScreenModule.Tickets.route) {
-                            TicketsScreen(navController = navController)
+                        composable(
+                            route = ScreenModule.Tickets.route + "/{id}",
+                            arguments = listOf( navArgument("id") { type = NavType.IntType })
+                            ) { capturar -> val ticketId = capturar.arguments?.getInt("id") ?: 0
+
+                            TicketScreen(ticketId = ticketId, navController = navController) {
+                                navController.navigate(ScreenModule.TicketsList.route)
+                            }
                         }
                     }
                 }

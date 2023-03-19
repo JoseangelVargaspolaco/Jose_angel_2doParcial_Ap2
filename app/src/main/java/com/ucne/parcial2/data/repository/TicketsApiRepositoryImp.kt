@@ -17,9 +17,25 @@ class TicketsApiRepositoryImp @Inject constructor(
         try {
             emit(Resource.Loading()) //indicar que estamos cargando
 
-            val ticket = ticketsApi.getTickets() //descarga las ocupaciones de internet, se supone quedemora algo
+            val ticket = ticketsApi.getTickets() //descarga los tickets de internet, se supone quedemora algo
 
-            emit(Resource.Success(ticket)) //indicar que se cargo correctamente y pasarle las monedas
+            emit(Resource.Success(ticket)) //indicar que se cargo correctamente
+        } catch (e: HttpException) {
+            //error general HTTP
+            emit(Resource.Error(e.message ?: "Error HTTP GENERAL"))
+        } catch (e: IOException) {
+            //debe verificar tu conexion a internet
+            emit(Resource.Error(e.message ?: "verificar tu conexion a internet"))
+        }
+    }
+    override  fun getTicketsId(id: Int): Flow<Resource<TicketDto>> = flow {
+        try {
+            emit(Resource.Loading()) //indicar que estamos cargando
+
+            val tickets =
+                ticketsApi.getTicketsId(id) //descagar la lista de tickets por el id
+
+            emit(Resource.Success(tickets)) //indicar que se cargo correctamente
         } catch (e: HttpException) {
             //error general HTTP
             emit(Resource.Error(e.message ?: "Error HTTP GENERAL"))

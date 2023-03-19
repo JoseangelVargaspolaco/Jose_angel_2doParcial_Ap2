@@ -6,4 +6,4 @@
 
 
 # Tickets List Screen
-![Screenshot_20230318-213505](https://user-images.githubusercontent.com/97201605/226149047-892db914-2258-4803-b91b-485276c95e74.png)
+![Screenshot_20230319-102024](https://user-images.githubusercontent.com/97201605/226182373-9db4705c-734e-4c2d-913d-fea9db7cd720.png)

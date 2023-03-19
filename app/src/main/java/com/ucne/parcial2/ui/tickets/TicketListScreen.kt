@@ -131,23 +131,28 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                     modifier = Modifier.weight(3f)
                 )
             }
+
             Spacer(modifier = Modifier.padding(10.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+
                 Text(
                     text = ticket.asunto.foldIndexed("") { index, acc, c ->
                         if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
                     },
                     style = MaterialTheme.typography.titleLarge,
                 )
+
                 Text(
                     text = ticket.estatus.foldIndexed("") { index, acc, c ->
                         if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
                     },
                     style = MaterialTheme.typography.titleLarge,
                 )
+
                 Icon(
                     imageVector = when (ticket.estatus) {
                         "Solicitado" -> {

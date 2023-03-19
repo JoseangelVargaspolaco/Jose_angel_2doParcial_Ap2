@@ -140,7 +140,6 @@ private fun TicketBody(
                     },
                     label = { Text(text = "Fecha") })
 
-
                 OutlinedTextField(
 
                     modifier = Modifier

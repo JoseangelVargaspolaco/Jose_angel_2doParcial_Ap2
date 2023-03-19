@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.SportsMartialArts
+import androidx.compose.material.icons.filled.WavingHand
 import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -74,5 +76,19 @@ fun DrawerMenu(
                 IconButton(onClick = {}) {}
             }
         )
+        Column(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Filled.SportsMartialArts,
+                contentDescription = null,
+                tint = Color.Blue,
+                modifier = Modifier
+                    .size(300.dp, 300.dp)
+                    .padding(4.dp),
+            )
+        }
     }
 }

@@ -152,7 +152,6 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                     },
                     style = MaterialTheme.typography.titleLarge,
                 )
-
                 Icon(
                     imageVector = when (ticket.estatus) {
                         "Solicitado" -> {

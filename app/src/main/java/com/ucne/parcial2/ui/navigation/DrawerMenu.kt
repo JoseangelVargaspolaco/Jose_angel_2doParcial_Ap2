@@ -5,8 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.SportsMartialArts
-import androidx.compose.material.icons.filled.WavingHand
-import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,7 +22,6 @@ fun DrawerMenu(
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    val ic  = Icons.TwoTone.Favorite
 
     val items = listOf(ScreenModule.Start, ScreenModule.TicketsList)
     val selectedItem = remember { mutableStateOf(items[0]) }
@@ -49,7 +46,6 @@ fun DrawerMenu(
             }
         }
     ) {
-        Spacer(Modifier.height(12.dp))
         TopAppBar(
             modifier = Modifier
                 .background(Color.Blue)
@@ -77,7 +73,9 @@ fun DrawerMenu(
             }
         )
         Column(
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

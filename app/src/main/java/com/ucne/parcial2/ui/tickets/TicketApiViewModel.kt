@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ucne.parcial2.data.remote.TicketsApi
 import com.ucne.parcial2.data.remote.dto.TicketDto
 import com.ucne.parcial2.data.repository.TicketsApiRepositoryImp
 import com.ucne.parcial2.util.Resource
@@ -29,17 +28,30 @@ data class TicketsState(
 )
 @HiltViewModel
 class TicketApiViewModel @Inject constructor(
-
-    private val ticketRepository: TicketsApiRepositoryImp,
-    private val ticketsApi: TicketsApi
-
+    private val ticketRepository: TicketsApiRepositoryImp
 ) : ViewModel() {
+
     var ticketId by mutableStateOf(0)
-    var empresa by mutableStateOf("")
     var asunto by mutableStateOf("")
-    var especificaciones by mutableStateOf("" )
+    var asuntoError by mutableStateOf("")
+
+    var empresa by mutableStateOf("")
+    var empresaError by mutableStateOf("")
+
+    var encargadoId by mutableStateOf("")
+
+    var especificaciones by mutableStateOf("")
+    var especificacionesError by mutableStateOf("")
+
     var estatus by mutableStateOf("")
+    var estatusError by mutableStateOf("")
+
     var fecha by mutableStateOf("")
+    var fechaError by mutableStateOf("")
+
+    var orden by mutableStateOf("")
+
+    var Estatus = listOf("Solicitado", "En espera", "En proceso", "Finalizado")
 
     var uiState = MutableStateFlow(TicketsListState())
         private set
@@ -63,7 +75,8 @@ class TicketApiViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-    fun TicketbyId(id:Int){
+
+    fun TicketbyId(id: Int) {
         ticketId = id
         Limpiar()
         ticketRepository.getTicketsId(ticketId).onEach { result ->
@@ -73,7 +86,7 @@ class TicketApiViewModel @Inject constructor(
                 }
                 is Resource.Success -> {
                     uiStateTicket.update {
-                        it.copy(ticket = result.data )
+                        it.copy(ticket = result.data)
                     }
                     empresa = uiStateTicket.value.ticket!!.empresa
                     asunto = uiStateTicket.value.ticket!!.asunto
@@ -88,35 +101,87 @@ class TicketApiViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun putTicket(){
+    fun putTicket() {
         viewModelScope.launch {
-            ticketRepository.putTickets(ticketId, TicketDto(asunto,
-                empresa,
-                uiStateTicket.value.ticket!!.encargadoId,
-                especificaciones,
-                estatus,uiStateTicket.value.ticket!!.fecha,
-                uiStateTicket.value.ticket!!.orden,
-                ticketId = ticketId ))
-        }
-    }
-
-    fun deleteTicket(){
-        viewModelScope.launch {
-            ticketRepository.deleteTickets(ticketId, TicketDto(asunto,
-                empresa,
-                uiStateTicket.value.ticket!!.encargadoId,
-                especificaciones,
-                estatus,uiStateTicket.value.ticket!!.fecha,
-                uiStateTicket.value.ticket!!.orden,
-                ticketId = ticketId )
+            ticketRepository.putTickets(
+                ticketId, TicketDto(
+                    asunto,
+                    empresa,
+                    uiStateTicket.value.ticket!!.encargadoId,
+                    especificaciones,
+                    estatus, fecha = uiStateTicket.value.ticket!!.fecha,
+                    uiStateTicket.value.ticket!!.orden,
+                    ticketId = ticketId
+                )
             )
         }
     }
 
-    private fun Limpiar(){
-        empresa = ""
+    fun onAsuntoChanged(asunto: String) {
+        this.asunto = asunto
+        HayErrores()
+    }
+
+    fun onEmpresaChanged(empresa: String) {
+        this.empresa = empresa
+        HayErrores()
+    }
+
+    fun onEspecificacionesChanged(especificaciones: String) {
+        this.especificaciones = especificaciones
+        HayErrores()
+    }
+
+    fun onFechaChanged(fecha: String) {
+        this.fecha = fecha
+        HayErrores()
+    }
+    fun onEstatusChanged(estatus: String) {
+        this.estatus = estatus
+        HayErrores()
+    }
+
+    fun HayErrores(): Boolean {
+        var hayError = false
+        asuntoError = ""
+        if (asunto.isBlank()) {
+            asuntoError = "Ingrese un asunto"
+            hayError = true
+        }
+
+        empresaError = ""
+        if (empresa.isBlank()) {
+            empresaError = "Ingrese el nombre de la empresa"
+            hayError = true
+        }
+
+        fechaError = ""
+        if(fecha.isBlank()){
+            empresaError = "Seleccione una fecha"
+            hayError = true
+        }
+
+        estatusError = ""
+        if(estatus.isNullOrBlank()){
+            estatusError = "Seleccione un estatus"
+            hayError = true
+        }
+
+        especificacionesError = ""
+        if (especificaciones.isBlank()) {
+            especificacionesError = "Ingrese las especificaciones"
+            hayError = true
+        }
+        return hayError
+    }
+
+    private fun Limpiar() {
         asunto = ""
-        estatus = ""
+        empresa = ""
+        encargadoId = ""
         especificaciones = ""
+        estatus = ""
+        fecha = ""
+        orden = ""
     }
 }

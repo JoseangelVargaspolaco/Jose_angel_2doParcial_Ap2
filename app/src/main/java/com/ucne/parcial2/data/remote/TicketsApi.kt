@@ -18,5 +18,5 @@ interface TicketsApi{
     suspend fun putTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): Response<Unit>
 
     @DELETE("/api/tickets/{id}")
-    suspend fun deleteTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): Response<Unit>
+    suspend fun deleteTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): TicketDto
 }

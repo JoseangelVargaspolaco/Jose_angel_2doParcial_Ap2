@@ -24,7 +24,6 @@ import androidx.navigation.NavController
 import com.ucne.parcial2.data.remote.dto.TicketDto
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import kotlinx.coroutines.launch
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TicketsListScreen(
@@ -33,42 +32,32 @@ fun TicketsListScreen(
     onTicketClick: (Int) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    Column(Modifier.fillMaxWidth()) {
-        Icon(
-            imageVector = Icons.Filled.ArrowBack,
-            contentDescription = null,
-            modifier = Modifier
-                .size(100.dp, 100.dp)
-                .padding(4.dp)
-                .wrapContentSize(Alignment.TopStart)
-                .clickable {
-                    scope.launch {
-                        navController.navigate(ScreenModule.Start.route)
-                    }
-                }
-        )
+    Column(Modifier.fillMaxWidth().wrapContentSize(Alignment.CenterEnd)) {
+        Spacer(modifier = Modifier.padding(30.dp))
         Scaffold(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.Center),
+                .fillMaxWidth(),
             topBar = {
                 TopAppBar(
                     title = {
-                        Row() {
-                            Text(
-                                text = "Lista de Tickets",
-                                textAlign = TextAlign.Center,
-                                fontSize = 40.sp,
-                                style = MaterialTheme.typography.headlineLarge
-                            )
-                            Spacer(modifier = Modifier.padding(10.dp))
-                            FloatingActionButton(
-                                onClick = {  navController.navigate(ScreenModule.TicketsList.route) }
-                            ) {
-                                Icon(imageVector = Icons.TwoTone.Autorenew, contentDescription = "Actualizar")
-                            }
-                            Spacer(modifier = Modifier.padding(5.dp))
-                        }
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier.fillMaxWidth()
+                                .wrapContentSize(Alignment.CenterStart)
+                                .clickable {
+                                    scope.launch {
+                                        navController.navigate(ScreenModule.Start.route)
+                                    }
+                                }
+                        )
+                        Text(
+                            text = "Listado de Tickets", textAlign = TextAlign.Center,
+                            fontSize = 35.sp, style = MaterialTheme.typography.headlineLarge,
+                            modifier = Modifier.fillMaxWidth()
+                                .wrapContentSize(Alignment.Center)
+                        )
+                        Spacer(modifier = Modifier.padding(40.dp))
                     }
                 )
             }

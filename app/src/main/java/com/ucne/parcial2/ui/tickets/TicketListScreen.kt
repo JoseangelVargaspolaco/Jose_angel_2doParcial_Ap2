@@ -1,9 +1,11 @@
 package com.ucne.parcial2.ui.tickets
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.twotone.*
@@ -21,67 +23,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ucne.parcial2.data.remote.dto.TicketDto
-import com.ucne.parcial2.ui.navigation.ScreenModule
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 import kotlinx.coroutines.launch
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun TicketsListScreen(
     navController: NavController,
     viewModel: TicketApiViewModel = hiltViewModel(),
     onTicketClick: (Int) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-    Column(Modifier.fillMaxWidth().wrapContentSize(Alignment.CenterEnd)) {
-        Spacer(modifier = Modifier.padding(30.dp))
-        Scaffold(
+    Column(Modifier.fillMaxSize()) {
+
+        Spacer(modifier = Modifier.padding(40.dp))
+
+        Text(
+            text = "Lista de Tickets", fontSize = 27.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            fontWeight = FontWeight.Bold
+        )
+
+
+        val uiState by viewModel.uiState.collectAsState()
+        Box(
             modifier = Modifier
-                .fillMaxWidth(),
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null,
-                            modifier = Modifier.fillMaxWidth()
-                                .wrapContentSize(Alignment.CenterStart)
-                                .clickable {
-                                    scope.launch {
-                                        navController.navigate(ScreenModule.Start.route)
-                                    }
-                                }
-                        )
-                        Text(
-                            text = "Listado de Tickets", textAlign = TextAlign.Center,
-                            fontSize = 35.sp, style = MaterialTheme.typography.headlineLarge,
-                            modifier = Modifier.fillMaxWidth()
-                                .wrapContentSize(Alignment.Center)
-                        )
-                        Spacer(modifier = Modifier.padding(40.dp))
-                    }
-                )
-            }
+                .fillMaxSize()
+                .padding()
         ) {
-            val uiState by viewModel.uiState.collectAsState()
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it)
-            ) {
-                TicketListBody(uiState.tickets) {
-                    onTicketClick(it)
-                }
+            TicketListBody(uiState.tickets){
+                onTicketClick(it)
             }
         }
     }
 }
 
+
 @Composable
 fun TicketListBody(ticketList: List<TicketDto>, onTicketClick: (Int) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
         LazyColumn {
-            items(ticketList) { ticket ->
-                TicketRow(ticket) {
+            items(ticketList) {ticket ->
+                TicketRow(ticket)
+                {
                     onTicketClick(it)
                 }
             }
@@ -91,54 +73,56 @@ fun TicketListBody(ticketList: List<TicketDto>, onTicketClick: (Int) -> Unit) {
 
 @Composable
 fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
+    Spacer(modifier = Modifier.padding(10.dp))
+
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(10.dp)
+            .padding(8.dp)
     ) {
         Column(
             modifier = Modifier
-                .clickable(onClick = { onTicketClick(ticket.ticketId) })
                 .fillMaxWidth()
+                .clickable(onClick = { onTicketClick(ticket.ticketId) })
         ) {
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentSize(Alignment.CenterEnd)
             ) {
                 Text(
-                    text = ticket.empresa.foldIndexed("") { index, acc, c ->
-                        if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
-                    },
-                    fontSize = 35.sp,
+                    text = ticket.empresa,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color(0xFF000000),
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(7f)
                 )
                 Text(
-                    text = ticket.fecha.substring(0, 10), fontSize = 25.sp,
-                    fontWeight = FontWeight.Black,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.weight(3f)
+                    String.format(ticket.fecha.substring(0, 10)),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = Color(0xD0808080),
+                    modifier = Modifier.weight(2f).border(0.5.dp, Color(0x56808080),
+                    shape = RoundedCornerShape(14.dp)),
                 )
             }
-
-            Spacer(modifier = Modifier.padding(10.dp))
-
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.TopStart),
+                horizontalArrangement = Arrangement.End
             ) {
-
                 Text(
-                    text = ticket.asunto.foldIndexed("") { index, acc, c ->
-                        if (index % 20 == 0 && index > 0) "$acc\n$c" else "$acc$c"
-                    },
-                    style = MaterialTheme.typography.titleLarge,
+                    text = ticket.asunto,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = Color(0xC3303030),
+                    modifier = Modifier.weight(8f)
                 )
                 Text(
-                    text = ticket.estatus.foldIndexed("") { index, acc, c ->
-                        if (index % 21 == 0 && index > 0) "$acc\n$c" else "$acc$c"
-                    },
-                    style = MaterialTheme.typography.titleLarge,
+                    text = ticket.estatus,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = Color(0xC3303030),
+                    modifier = Modifier.weight(7f).wrapContentSize(Alignment.CenterEnd)
                 )
                 Icon(
                     imageVector = when (ticket.estatus) {
@@ -157,7 +141,8 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                         else -> {
                             Icons.TwoTone.AddCircle
                         }
-                    }, contentDescription = ticket.estatus,
+                    },
+                    contentDescription = ticket.estatus,
                     tint = when (ticket.estatus) {
                         "Solicitado" -> {
                             Color.Blue
@@ -174,15 +159,11 @@ fun TicketRow(ticket: TicketDto, onTicketClick: (Int) -> Unit) {
                         else -> {
                             Color.Gray
                         }
-                    }
+                    },
+                    modifier = Modifier.size(20.dp).wrapContentSize(Alignment.CenterEnd)
                 )
             }
         }
-        Spacer(modifier = Modifier.padding(10.dp))
-        Divider(
-            Modifier
-                .fillMaxWidth()
-                .size(15.dp)
-        )
+        Divider(Modifier.fillMaxWidth())
     }
 }

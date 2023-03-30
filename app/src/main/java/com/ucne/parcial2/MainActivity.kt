@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import com.ucne.parcial2.ui.theme.Parcial2Theme
 import com.ucne.parcial2.ui.tickets.TicketScreen
+
 import com.ucne.parcial2.ui.tickets.TicketsListScreen
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*

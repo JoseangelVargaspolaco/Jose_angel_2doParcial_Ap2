@@ -215,7 +215,6 @@ class TicketApiViewModel @Inject constructor(
         }
     }
     fun postTickets(id: Int) {
-
         viewModelScope.launch {
             ticketId = id!!
             try {

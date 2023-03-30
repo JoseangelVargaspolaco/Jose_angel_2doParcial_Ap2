@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ucne.parcial2.data.remote.dto.TicketDto
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 import com.ucne.parcial2.data.repository.TicketsApiRepositoryImp
 import com.ucne.parcial2.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ data class TicketsListState(
 )
 data class TicketsState(
     val isLoading: Boolean = false,
-    val ticket: TicketDto ? =  null,
+    val ticket: TicketDto? =  null,
     val error: String = ""
 )
 @HiltViewModel
@@ -101,19 +101,28 @@ class TicketApiViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun putTicket() {
+    fun putTicket(id: Int) {
         viewModelScope.launch {
-            ticketRepository.putTickets(
-                ticketId, TicketDto(
-                    asunto,
-                    empresa,
-                    uiStateTicket.value.ticket!!.encargadoId,
-                    especificaciones,
-                    estatus, fecha = uiStateTicket.value.ticket!!.fecha,
-                    uiStateTicket.value.ticket!!.orden,
-                    ticketId = ticketId
-                )
-            )
+            ticketId = id!!
+            try {
+                if (ticketId != null) {
+                    ticketRepository.putTickets(
+                        ticketId, TicketDto(
+                            asunto,
+                            empresa,
+                            uiStateTicket.value.ticket!!.encargadoId,
+                            especificaciones,
+                            estatus, fecha = uiStateTicket.value.ticket!!.fecha,
+                            uiStateTicket.value.ticket!!.orden,
+                            ticketId = ticketId
+                        )
+                    )
+                } else {
+                    throw NullPointerException("Value is null")
+                }
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -173,6 +182,62 @@ class TicketApiViewModel @Inject constructor(
             hayError = true
         }
         return hayError
+    }
+
+    fun deleteTicket(id: Int) {
+        viewModelScope.launch {
+            ticketId = id!!
+            try {
+                if (ticketId != null) {
+                    ticketRepository.deleteTickets(ticketId)
+                } else {
+                    throw NullPointerException("Value is null")
+                }
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun newTickets(id: Int){
+        viewModelScope.launch {
+            ticketId = id!!
+            try {
+                if (ticketId != null) {
+                    postTickets(ticketId)
+                    putTicket(ticketId)
+                } else {
+                    throw NullPointerException("Value is null")
+                }
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+            }
+        }
+    }
+    fun postTickets(id: Int) {
+
+        viewModelScope.launch {
+            ticketId = id!!
+            try {
+                if (ticketId != null) {
+                    ticketRepository.postTickets(
+                        TicketDto(
+                            asunto,
+                            empresa,
+                            uiStateTicket.value.ticket!!.encargadoId,
+                            especificaciones,
+                            estatus, fecha = uiStateTicket.value.ticket!!.fecha,
+                            uiStateTicket.value.ticket!!.orden,
+                            ticketId = ticketId
+                        )
+                    )
+                } else {
+                    throw NullPointerException("Value is null")
+                }
+            } catch (e: NullPointerException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun Limpiar() {

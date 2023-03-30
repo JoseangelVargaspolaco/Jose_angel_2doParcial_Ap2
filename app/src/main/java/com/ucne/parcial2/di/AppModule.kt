@@ -5,7 +5,7 @@ import androidx.room.Room
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ucne.parcial2.data.local.RoomTicketsDb
-import com.ucne.parcial2.data.remote.TicketsApi
+import com.ucne.parcial2.data.local.dao.remote.TicketsApi
 import com.ucne.parcial2.data.repository.TicketApiRepository
 import com.ucne.parcial2.data.repository.TicketsApiRepositoryImp
 import dagger.Binds

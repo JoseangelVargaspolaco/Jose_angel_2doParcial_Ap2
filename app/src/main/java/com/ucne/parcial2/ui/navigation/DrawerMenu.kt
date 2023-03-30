@@ -23,7 +23,7 @@ fun DrawerMenu(
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    val items = listOf(ScreenModule.Start, ScreenModule.TicketsList)
+    val items = listOf(ScreenModule.Start, ScreenModule.Tickets,ScreenModule.TicketsList)
     val selectedItem = remember { mutableStateOf(items[0]) }
     ModalNavigationDrawer(
         drawerState = drawerState,

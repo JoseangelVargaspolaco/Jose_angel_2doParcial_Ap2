@@ -1,6 +1,6 @@
-package com.ucne.parcial2.data.remote
+package com.ucne.parcial2.data.local.dao.remote
 
-import com.ucne.parcial2.data.remote.dto.TicketDto
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -18,5 +18,5 @@ interface TicketsApi{
     suspend fun putTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): Response<Unit>
 
     @DELETE("/api/tickets/{id}")
-    suspend fun deleteTickets(@Path("id") id: Int, @Body ticketDto: TicketDto): TicketDto
+    suspend fun deleteTickets(@Path("id") id: Int): TicketDto
 }

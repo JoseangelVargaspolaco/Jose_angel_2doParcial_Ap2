@@ -1,4 +1,4 @@
-package com.ucne.parcial2.data.remote.dto
+package com.ucne.parcial2.data.local.dao.remote.dto
 
 data class TicketDto(
     val asunto: String,

@@ -11,14 +11,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.*
-import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ucne.parcial2.data.remote.dto.TicketDto
-import com.ucne.parcial2.ui.navigation.DrawerMenu
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import com.ucne.parcial2.ui.theme.Parcial2Theme
 import com.ucne.parcial2.ui.tickets.TicketScreen
@@ -41,15 +37,11 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = ScreenModule.Start.route
+                        startDestination = ScreenModule.TicketsList.route
                     ) {
-                        composable(ScreenModule.Start.route) {
-                            DrawerMenu(navController = navController)
-                        }
-
                         composable(ScreenModule.TicketsList.route) {
                             TicketsListScreen(navController = navController) { id ->
-                                navController.navigate(ScreenModule.Tickets.route + "/${id}")
+                                    navController.navigate(ScreenModule.Tickets.route + "/${id}")
                             }
                         }
 
@@ -57,7 +49,7 @@ class MainActivity : ComponentActivity() {
                             ScreenModule.Tickets.route + "/{id}",
                             arguments = listOf(navArgument("id") { type = NavType.IntType })
                         ) { capturar ->
-                            val ticketId = capturar.arguments?.getInt("id") ?: 0
+                            var ticketId = capturar.arguments?.getInt("id") ?: 0
 
                             TicketScreen(ticketId = ticketId, navController = navController) {
                                 navController.navigate(ScreenModule.TicketsList.route)

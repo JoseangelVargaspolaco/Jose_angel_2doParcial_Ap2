@@ -1,7 +1,7 @@
 package com.ucne.parcial2.data.repository
 
-import com.ucne.parcial2.data.remote.TicketsApi
-import com.ucne.parcial2.data.remote.dto.TicketDto
+import com.ucne.parcial2.data.local.dao.remote.TicketsApi
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 import com.ucne.parcial2.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -28,7 +28,7 @@ class TicketsApiRepositoryImp @Inject constructor(
             emit(Resource.Error(e.message ?: "verificar tu conexion a internet"))
         }
     }
-    override  fun getTicketsId(id: Int): Flow<Resource<TicketDto>> = flow {
+    override fun getTicketsId(id: Int): Flow<Resource<TicketDto>> = flow {
         try {
             emit(Resource.Loading()) //indicar que estamos cargando
 
@@ -48,9 +48,9 @@ class TicketsApiRepositoryImp @Inject constructor(
     override suspend fun putTickets(id: Int, ticketDto: TicketDto) {
         ticketsApi.putTickets(id, ticketDto)
     }
-    override suspend fun deleteTickets(id: Int, ticketDto: TicketDto){
-        ticketsApi.deleteTickets(id, ticketDto)
-    }
+   override suspend fun deleteTickets(id: Int){
+       ticketsApi.deleteTickets(id)
+   }
     override suspend fun postTickets(ticketDto: TicketDto) {
        ticketsApi.postTickets(ticketDto)
     }

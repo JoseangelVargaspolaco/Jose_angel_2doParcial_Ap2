@@ -3,8 +3,8 @@ package com.ucne.parcial2.data.repository
 import com.ucne.parcial2.data.local.dao.TicketDao
 import com.ucne.parcial2.data.local.entity.TicketEntity
 import com.ucne.parcial2.data.local.entity.toTicketDto
-import com.ucne.parcial2.data.remote.TicketsApi
-import com.ucne.parcial2.data.remote.dto.TicketDto
+import com.ucne.parcial2.data.local.dao.remote.TicketsApi
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -24,7 +24,7 @@ class TicketRepository @Inject constructor
 
     suspend fun delete(ticket: TicketEntity){
         ticketDao.delete(ticket)
-        ticketsApi.deleteTickets(ticket.ticketId!!, ticket.toTicketDto())
+        ticketsApi.deleteTickets(ticket.ticketId!!)
     }
 
     suspend fun update(ticket: TicketEntity){

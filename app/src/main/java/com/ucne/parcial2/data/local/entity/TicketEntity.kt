@@ -2,7 +2,7 @@ package com.ucne.parcial2.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.ucne.parcial2.data.remote.dto.TicketDto
+import com.ucne.parcial2.data.local.dao.remote.dto.TicketDto
 
 @Entity(tableName = "Tickets")
 data class TicketEntity(

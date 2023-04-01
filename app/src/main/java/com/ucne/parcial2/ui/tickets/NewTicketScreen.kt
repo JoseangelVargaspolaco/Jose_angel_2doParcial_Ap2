@@ -26,22 +26,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import kotlinx.coroutines.launch
-import java.util.concurrent.atomic.AtomicInteger
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TicketScreen(
-    ticketId: Int,
+fun NewTicketScreen(
     navController: NavController,
     viewModel: TicketApiViewModel = hiltViewModel(),
     onSaveClick: () -> Unit
 ) {
-    remember {
-        viewModel.TicketbyId(ticketId)
-        0
-    }
     var expanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val anio: Int
@@ -83,7 +77,7 @@ fun TicketScreen(
 
         Spacer(modifier = Modifier.padding(20.dp))
         Text(
-            text = "Registro de Tickets", fontSize = 27.sp,
+            text = "Registro de Nuevo Ticket", fontSize = 27.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontWeight = FontWeight.Bold
@@ -158,28 +152,6 @@ fun TicketScreen(
                 modifier = Modifier.wrapContentSize(Alignment.Center)
             )
         }
-
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(4.dp)
-                .wrapContentSize(Alignment.Center),
-            value = viewModel.fecha,
-            onValueChange = { viewModel.fecha = it },
-            enabled = false,
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Filled.DateRange,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(33.dp)
-                        .padding(4.dp)
-                        .clickable {
-                            mDatePickerDialog.show()
-                        })
-            },
-            label = { Text(text = "Fecha") }
-        )
 
         OutlinedTextField(
             modifier = Modifier
@@ -304,27 +276,8 @@ fun TicketScreen(
                     )
                 },
                 onClick = {
-                    viewModel.putTicket(ticketId)
-                    onSaveClick()
-                }
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-            ExtendedFloatingActionButton(
-                modifier = Modifier
-                    .size(60.dp, 50.dp)
-                    .wrapContentSize(Alignment.Center),
-                text = {},
-                containerColor = Color.Red,
-                contentColor = Color.Red,
-                icon = {
-                    Icon(
-                        imageVector = Icons.Filled.Delete,
-                        contentDescription = "delete",
-                        tint = Color.White
-                    )
-                },
-                onClick = {
-                    viewModel.deleteTicket(ticketId)
+                    viewModel.postTickets()
+                    navController.navigate(ScreenModule.TicketsList.route)
                     onSaveClick()
                 }
             )

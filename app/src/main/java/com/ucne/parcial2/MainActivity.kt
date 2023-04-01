@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.ucne.parcial2.ui.navigation.ScreenModule
 import com.ucne.parcial2.ui.theme.Parcial2Theme
+import com.ucne.parcial2.ui.tickets.NewTicketScreen
 import com.ucne.parcial2.ui.tickets.TicketScreen
 
 import com.ucne.parcial2.ui.tickets.TicketsListScreen
@@ -40,9 +41,15 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = ScreenModule.TicketsList.route
                     ) {
+                        composable(ScreenModule.NewTickets.route) {
+                            NewTicketScreen(navController = navController) {
+                                    navController.navigate(ScreenModule.NewTickets.route)
+                            }
+                        }
+
                         composable(ScreenModule.TicketsList.route) {
-                            TicketsListScreen(navController = navController) { id ->
-                                    navController.navigate(ScreenModule.Tickets.route + "/${id}")
+                            TicketsListScreen(navController = navController) {
+                                    id -> navController.navigate(ScreenModule.Tickets.route + "/${id}")
                             }
                         }
 

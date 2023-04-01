@@ -23,33 +23,30 @@ data class TicketsListState(
 )
 data class TicketsState(
     val isLoading: Boolean = false,
-    val ticket: TicketDto? =  null,
+    val ticket: TicketDto? = null,
     val error: String = ""
 )
 @HiltViewModel
 class TicketApiViewModel @Inject constructor(
-    private val ticketRepository: TicketsApiRepositoryImp
-) : ViewModel() {
+    private val ticketRepository: TicketsApiRepositoryImp,
 
-    var ticketId by mutableStateOf(0)
+) : ViewModel() {
     var asunto by mutableStateOf("")
     var asuntoError by mutableStateOf("")
 
     var empresa by mutableStateOf("")
     var empresaError by mutableStateOf("")
 
-    var encargadoId by mutableStateOf("")
+    var encargadoId by mutableStateOf(1)
+    var orden by mutableStateOf(1)
+    var ticketId by mutableStateOf(1)
+    var fecha by mutableStateOf("2023-04-01T19:23:59.770Z")
 
     var especificaciones by mutableStateOf("")
     var especificacionesError by mutableStateOf("")
 
     var estatus by mutableStateOf("")
     var estatusError by mutableStateOf("")
-
-    var fecha by mutableStateOf("")
-    var fechaError by mutableStateOf("")
-
-    var orden by mutableStateOf("")
 
     var Estatus = listOf("Solicitado", "En espera", "En proceso", "Finalizado")
 
@@ -141,10 +138,6 @@ class TicketApiViewModel @Inject constructor(
         HayErrores()
     }
 
-    fun onFechaChanged(fecha: String) {
-        this.fecha = fecha
-        HayErrores()
-    }
     fun onEstatusChanged(estatus: String) {
         this.estatus = estatus
         HayErrores()
@@ -161,12 +154,6 @@ class TicketApiViewModel @Inject constructor(
         empresaError = ""
         if (empresa.isBlank()) {
             empresaError = "Ingrese el nombre de la empresa"
-            hayError = true
-        }
-
-        fechaError = ""
-        if(fecha.isBlank()){
-            empresaError = "Seleccione una fecha"
             hayError = true
         }
 
@@ -199,53 +186,37 @@ class TicketApiViewModel @Inject constructor(
         }
     }
 
-    fun newTickets(id: Int){
+    fun postTickets() {
         viewModelScope.launch {
-            ticketId = id!!
-            try {
-                if (ticketId != null) {
-                    postTickets(ticketId)
-                    putTicket(ticketId)
-                } else {
-                    throw NullPointerException("Value is null")
-                }
-            } catch (e: NullPointerException) {
-                e.printStackTrace()
+            if (ticketId == null) {
+                ticketId += 1
             }
+            if (encargadoId == null) {
+                encargadoId += 1
+            }
+            if (orden == null) {
+                orden += 1
+            }
+            ticketRepository.postTickets(
+                TicketDto(
+                    asunto = asunto,
+                    empresa = empresa,
+                    encargadoId = encargadoId,
+                    especificaciones = especificaciones,
+                    estatus = estatus,
+                    fecha = "2023-04-01T19:23:59.770Z",
+                    orden = orden,
+                    ticketId = ticketId
+                )
+            )
         }
     }
-    fun postTickets(id: Int) {
-        viewModelScope.launch {
-            ticketId = id!!
-            try {
-                if (ticketId != null) {
-                    ticketRepository.postTickets(
-                        TicketDto(
-                            asunto,
-                            empresa,
-                            uiStateTicket.value.ticket!!.encargadoId,
-                            especificaciones,
-                            estatus, fecha = uiStateTicket.value.ticket!!.fecha,
-                            uiStateTicket.value.ticket!!.orden,
-                            ticketId = ticketId
-                        )
-                    )
-                } else {
-                    throw NullPointerException("Value is null")
-                }
-            } catch (e: NullPointerException) {
-                e.printStackTrace()
-            }
-        }
-    }
+
 
     private fun Limpiar() {
         asunto = ""
         empresa = ""
-        encargadoId = ""
         especificaciones = ""
         estatus = ""
-        fecha = ""
-        orden = ""
     }
 }

@@ -6,5 +6,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class ScreenModule(val route: String) {
     object Tickets : ScreenModule("tickets")
+    object NewTickets : ScreenModule("tickets")
     object TicketsList : ScreenModule("tickets_list")
 }

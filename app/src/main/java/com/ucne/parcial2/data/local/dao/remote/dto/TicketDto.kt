@@ -3,7 +3,7 @@ package com.ucne.parcial2.data.local.dao.remote.dto
 data class TicketDto(
     val asunto: String,
     val empresa: String,
-    val encargadoId: Int,
+    var encargadoId: Int,
     val especificaciones: String,
     val estatus: String,
     var fecha: String,
